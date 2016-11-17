@@ -1,9 +1,12 @@
 'use strict';
 
+var _ = require('lodash');
 var google = require('googleapis');
 
 var express = require('express');
 var app = express();
+
+app.set('json spaces', 2);
 
 app.get('/', function (req, res) {
 
@@ -43,17 +46,21 @@ app.get('/', function (req, res) {
         console.log('No upcoming events found.');
       }
 
-      for (var i = 0; i < events.length; i++) {
-        var event = events[i];
-        var start = event.start.dateTime || event.start.date;
-        console.log('%s - %s', start, event.summary);
-      }
-
       // handle err and response
-      res.send('involved api');
+      res.json(_.map(resp.items, square));
     });
   });
 });
+
+function square(event) {
+  return {
+    description: event.description,
+    email: event.organizer.email,
+    location: event.location,
+    start: event.start.dateTime || event.start.date,
+    summary: event.summary
+  };
+}
 
 app.listen(3000, function () {
   console.log('Example app listening on port 3000!');
