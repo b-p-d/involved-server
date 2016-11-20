@@ -82,7 +82,11 @@ function square(event) {
     description: event.description,
     email: event.organizer.email,
     location: event.location,
-    start: event.start.dateTime || event.start.date
+    start: event.start.dateTime || event.start.date,
+    summary: event.summary,
+    volunteers: 10,
+    needed: 100,
+    signup: 'https://docs.google.com/forms/d/e/1FAIpQLScZF85hD8yyLisRtryvzbCo2AaFo2uMZc3m53SKZcjBXW_IMw/viewform'
   };
 }
 
