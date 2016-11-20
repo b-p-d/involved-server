@@ -8,6 +8,26 @@ var app = express();
 
 app.set('json spaces', 2);
 
+// Add headers
+app.use(function (req, res, next) {
+
+    // Website you wish to allow to connect
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+
+    // Request methods you wish to allow
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+
+    // Request headers you wish to allow
+    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+
+    // Set to true if you need the website to include cookies in the requests sent
+    // to the API (e.g. in case you use sessions)
+    res.setHeader('Access-Control-Allow-Credentials', true);
+
+    // Pass to next layer of middleware
+    next();
+});
+
 app.get('/', function (req, res) {
 
   var key = require('./client_secret.json');
@@ -24,6 +44,7 @@ app.get('/', function (req, res) {
   jwtClient.authorize(function (err, tokens) {
     if (err) {
       console.log(err);
+      return res.json('uh oh');
     }
 
     var calendar = google.calendar('v3');
@@ -38,12 +59,14 @@ app.get('/', function (req, res) {
 
       if (err) {
         console.log('The API returned an error: ' + err);
+        return res.json('uh oh');
       }
 
       var events = resp.items;
 
       if (events.length === 0) {
         console.log('No upcoming events found.');
+        return res.json('No upcoming events found');
       }
 
       // handle err and response
@@ -53,12 +76,13 @@ app.get('/', function (req, res) {
 });
 
 function square(event) {
+  // TODO - check if the description contains base64 info
+
   return {
     description: event.description,
     email: event.organizer.email,
     location: event.location,
-    start: event.start.dateTime || event.start.date,
-    summary: event.summary
+    start: event.start.dateTime || event.start.date
   };
 }
 
