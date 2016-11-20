@@ -76,9 +76,8 @@ app.get('/', function (req, res) {
 });
 
 function square(event) {
-  // TODO - check if the description contains base64 info
 
-  return {
+  var uberEvent = {
     description: event.description,
     email: event.organizer.email,
     location: event.location,
@@ -88,6 +87,30 @@ function square(event) {
     needed: 100,
     signup: 'https://docs.google.com/forms/d/e/1FAIpQLScZF85hD8yyLisRtryvzbCo2AaFo2uMZc3m53SKZcjBXW_IMw/viewform'
   };
+
+  // check if the event has attachments
+  // TODO - check if the attachment ends in a know file format
+  if (event.attachments && event.attachments.length > 0) {
+    uberEvent.image = event.attachments[0].fileUrl;
+  }
+
+  // TODO - check if the description contains base64 info
+  if (event.description.includes('--- MORE ---')) {
+    var parts = event.description.split('--- MORE ---');
+
+    var meta = new Buffer(parts[1], 'base64').toString('utf8');
+
+    // decode base64
+    uberEvent.meta = JSON.parse(meta);
+
+    uberEvent.description = parts[0];
+
+    if (uberEvent.meta.image) {
+      uberEvent.image = uberEvent.meta.image;
+    }
+  }
+
+  return uberEvent;
 }
 
 app.listen(3000, function () {
