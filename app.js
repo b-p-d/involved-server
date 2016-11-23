@@ -91,7 +91,7 @@ function buildUpEvent(event) {
 
   try {
     // check if the event contains meta data
-    if (event.description.includes('--- MORE ---')) {
+    if (event.description && event.description.includes('--- MORE ---')) {
       var parts = event.description.split('--- MORE ---');
 
       var meta = new Buffer(parts[1], 'base64').toString('utf8');
