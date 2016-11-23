@@ -85,20 +85,22 @@ function buildUpEvent(event) {
     summary: event.summary
   };
 
-  // TODO - check if the description contains base64 info
-  if (event.description.includes('--- MORE ---')) {
-    var parts = event.description.split('--- MORE ---');
+  try {
+    // check if the event contains meta data
+    if (event.description.includes('--- MORE ---')) {
+      var parts = event.description.split('--- MORE ---');
 
-    var meta = new Buffer(parts[1], 'base64').toString('utf8');
+      var meta = new Buffer(parts[1], 'base64').toString('utf8');
 
-    // decode base64
-    uberEvent.meta = JSON.parse(meta);
+      // decode base64
+      uberEvent.meta = JSON.parse(meta);
 
-    uberEvent.description = parts[0];
-
-    if (uberEvent.meta.image) {
-      uberEvent.image = uberEvent.meta.image;
+      // update the description without meta information
+      uberEvent.description = parts[0];
     }
+  }
+  catch (e) {
+    console.log(e);
   }
 
   return uberEvent;
