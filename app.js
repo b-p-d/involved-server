@@ -94,7 +94,7 @@ function buildUpEvent(event) {
     if (event.description && event.description.includes('--- MORE ---')) {
       var parts = event.description.split('--- MORE ---');
 
-      var meta = new Buffer(parts[1], 'base64').toString('utf8');
+      var meta = new Buffer(parts.pop(), 'base64').toString('utf8');
 
       // decode base64
       uberEvent.meta = JSON.parse(meta);
