@@ -85,12 +85,6 @@ function buildUpEvent(event) {
     summary: event.summary
   };
 
-  // check if the event has attachments
-  // TODO - check if the attachment ends in a know file format
-  if (event.attachments && event.attachments.length > 0) {
-    uberEvent.image = event.attachments[0].fileUrl;
-  }
-
   // TODO - check if the description contains base64 info
   if (event.description.includes('--- MORE ---')) {
     var parts = event.description.split('--- MORE ---');
