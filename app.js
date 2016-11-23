@@ -97,6 +97,11 @@ function buildUpEvent(event) {
 
       // update the description without meta information
       uberEvent.description = parts[0];
+
+      // override the default email if set in the meta
+      if (uberEvent.meta.email) {
+        uberEvent.email = uberEvent.meta.email;
+      }
     }
   }
   catch (e) {
