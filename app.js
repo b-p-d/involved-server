@@ -6,28 +6,31 @@ var google = require('googleapis');
 var express = require('express');
 var app = express();
 
+// set pretty json
 app.set('json spaces', 2);
 
-// Add headers
+// use CORS headers
+// TODO get the url from env vars
 app.use(function (req, res, next) {
 
-    // Website you wish to allow to connect
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+  // Website you wish to allow to connect
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
 
-    // Request methods you wish to allow
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // Request methods you wish to allow
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // Request headers you wish to allow
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // Request headers you wish to allow
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-    // Set to true if you need the website to include cookies in the requests sent
-    // to the API (e.g. in case you use sessions)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+  // Set to true if you need the website to include cookies in the requests sent
+  // to the API (e.g. in case you use sessions)
+  res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Pass to next layer of middleware
-    next();
+  // Pass to next layer of middleware
+  next();
 });
 
+// get the calendar events
 app.get('/', function (req, res) {
 
   var key = require('./client_secret.json');
@@ -115,6 +118,6 @@ function buildUpEvent(event) {
   return uberEvent;
 }
 
-app.listen(3000, function () {
-  console.log('Example app listening on port 3000!');
+app.listen(9000, function () {
+  console.log('involved server running on port 9000!');
 });
