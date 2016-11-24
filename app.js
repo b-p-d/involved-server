@@ -81,9 +81,13 @@ function buildUpEvent(event) {
     description: event.description,
     email: event.organizer.email,
     location: event.location,
-    start: event.start.dateTime || event.start.date,
+    startTime: event.start.dateTime,
+    endTime: event.end.dateTime,
+    start: event.start.date,
+    end: event.end.date,
     summary: event.summary
   };
+
 
   try {
     // check if the event contains meta data
