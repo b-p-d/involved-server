@@ -6,6 +6,10 @@ var google = require('googleapis');
 var express = require('express');
 var app = express();
 
+// set the port of our application
+// process.env.PORT lets the port be set by Heroku
+var port = process.env.PORT || 8080;
+
 // set pretty json
 app.set('json spaces', 2);
 
@@ -116,6 +120,6 @@ function buildUpEvent(event) {
   return uberEvent;
 }
 
-app.listen(9000, function () {
-  console.log('involved server running on port 9000!');
+app.listen(port, function () {
+  console.log('involved server running on port ' + port);
 });
