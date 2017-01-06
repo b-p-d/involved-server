@@ -10,11 +10,10 @@ var app = express();
 app.set('json spaces', 2);
 
 // use CORS headers
-// TODO get the url from env vars
 app.use(function (req, res, next) {
 
   // Website you wish to allow to connect
-  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Origin', process.env.CLIENT_URL);
 
   // Request methods you wish to allow
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
@@ -33,13 +32,12 @@ app.use(function (req, res, next) {
 // get the calendar events
 app.get('/', function (req, res) {
 
-  var key = require('./client_secret.json');
   var SCOPES = ['https://www.googleapis.com/auth/calendar.readonly'];
 
   var jwtClient = new google.auth.JWT(
-    key.client_email,
+    process.env.CLIENT_EMAIL,
     null,
-    key.private_key,
+    process.env.PRIVATE_KEY,
     SCOPES,
     'vintagechurchla@gmail.com'
   );
